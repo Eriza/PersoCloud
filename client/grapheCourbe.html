@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="Aurélien ANNE">
+
+	<link href="./css/nv.d3.css" rel="stylesheet" type="text/css">
+	<link href="./css/teststyle.css" rel="stylesheet" type='text/css'>
+	<script src="./js/d3.js"></script>
+	<script src="./js/nv.d3.js"></script>
+	
+    <title>PersoCloud</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!--<link href="css/dashboard.css" rel="stylesheet">-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<script type="text/javascript">
+
+		d3.select("body").on("keydown",function() {
+		  if (d3.event.ctrlKey && d3.event.which === 75) {
+			 alert("keydowned");
+		  }
+		});
+		//------------ CHART 1
+		defaultChartConfig("chart1", dummyStocks(),true, true, {forceY:false});
+
+		function defaultChartConfig(containerid, data, guideline, useDates, auxOptions) {
+		  if (auxOptions === undefined) auxOptions = {};
+		  if (guideline === undefined) guideline = true;
+		  nv.addGraph(function() {
+			var chart;
+			chart = nv.models.lineWithFocusChart().useInteractiveGuideline(guideline);
+
+			chart
+				.x(function(d,i) {
+				  return d.x;
+				});
+
+			if (auxOptions.width)
+			  chart.width(auxOptions.width);
+
+			if (auxOptions.height)
+			  chart.height(auxOptions.height);
+
+			if (auxOptions.forceY)
+			  chart.forceY([0]);
+
+			var formatter;
+			if (useDates !== undefined) {
+				formatter = function(d,i) {
+						var now = (new Date()).getTime() - 365;
+						now = new Date(now + d * 36400 * 1000);
+						return d3.time.format('%b %d %Y')(now );
+				}
+			}
+			else {
+				formatter = d3.format(",.1f");
+			}
+			chart.margin({right: 40});
+			//chart.forceY([0,70]);
+			chart.xAxis // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the parent chart, so need to chain separately
+				.tickFormat(
+					formatter
+				  );
+				  
+			chart.x2Axis 
+				.tickFormat(
+					formatter
+				  );
+
+			chart.yAxis
+				.axisLabel('Consommation (kWh)')
+				.tickFormat(d3.format(',.2f'));
+
+
+			d3.select('#' + containerid + ' svg')
+				.datum(data)
+			  .transition().duration(500)
+				.call(chart);
+
+			nv.utils.windowResize(chart.update);
+
+			chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+
+			return chart;
+		  });
+		}
+
+		function dummyStocks(numPoints) {
+		  numPoints = numPoints || 200;
+		  function volatileChart(key,startPrice, volatility, isArea) {
+			 var rval = {key: key, values: []};
+			 if (isArea) rval.area = true;
+			 for(var i = 1; i < numPoints; i++) {
+
+				rval.values.push({x: i, y: startPrice});
+				var rnd = Math.random();
+				var changePct = 2 * volatility * rnd;
+				if ( changePct > volatility) {
+				   changePct -= (2*volatility);
+				}
+
+				startPrice = startPrice + startPrice * changePct;
+
+			 }
+			 return rval;
+		  }
+
+		  var stocks = [];
+		  stocks.push(volatileChart("Consommation perso",55.00, 0.08));
+		  stocks.push(volatileChart("Consommation moyenne", 56.01,0.08));
+		  return stocks;
+		}
+
+	</script>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">PersoCloud</a>
+        </div>
+		<div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="compte.html">Préférences</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+	<br/>
+	
+    <div class="container-fluid">
+      <div class="row">
+		
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Courbe:</h1>
+          <div class="row placeholders">
+			<div class='chart almostfull' id='chart1' width="400">
+				Courbe de consommation électrique
+				<svg></svg>
+			  </div>
+		  </div>
+	    </div>
+		
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		  <div class="row placeholders">
+		    <h1 class="page-header"></h1>
+		    <button type="button" class="btn btn-lg btn-primary" onclick="location.href='elec.html'">Retour</button>
+		  </div>
+		</div>
+		
+	  </div>
+	</div>
+	
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="./js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="../../assets/js/vendor/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

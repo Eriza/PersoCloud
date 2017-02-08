@@ -1,0 +1,21 @@
+{
+  "name": "persocloud",
+  "version": "0.0.1",
+  "description": "La comparaison de données à portée de Cloud",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.irisa.fr/pcloud/app-cozy.git"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "body-parser"    : "^1.16.0",
+    "express"        : "^4.14.1",
+    "method-override": "^2.3.7",
+	"morgan"         : "^1.8.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "cozy-permissions": {},
+  "cozy-displayName": "PersoCloud"
+}
