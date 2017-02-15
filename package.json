@@ -1,6 +1,6 @@
 {
   "name": "persocloud",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "La comparaison de données à portée de Cloud",
   "repository": {
     "type": "git",
@@ -8,14 +8,20 @@
   },
   "main": "server.js",
   "dependencies": {
-    "body-parser"    : "^1.16.0",
-    "express"        : "^4.14.1",
+    "body-parser": "^1.16.0",
+    "cozydb": "^0.1.13",
+    "express": "^4.14.1",
     "method-override": "^2.3.7",
-	"morgan"         : "^1.8.0"
+    "moment": "^2.17.1",
+    "morgan": "^1.8.0"
   },
   "scripts": {
     "start": "node server.js"
   },
-  "cozy-permissions": {},
+  "cozy-permissions": {
+    "All": {
+      "description": "Toutes permissions pour la phase de développement."
+    }
+  },
   "cozy-displayName": "PersoCloud"
 }
