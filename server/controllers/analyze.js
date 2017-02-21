@@ -1,33 +1,24 @@
-const CONTROLLER_NAME = "analyze"
-
 var http = require('http')
 var express = require('express')
 var app = express()
 var cozydb = require('cozydb')
 var requestJson = require('request-json');
 
+var hlp_date = require('../helpers/date');
+
 function analyze(req, res, next) {
 	// Extraction de la période
-	var period = null
-	if(req.params.period != undefined) {
-		var dates = req.params.period.split(";");
-		if(dates == undefined || dates.length != 2) { 			
-			res.status(400).send('Invalid period')
-			return;
-		}
-		else {
-			/* TODO: Tester si dates valides (dates[0] <= dates[1] et format 2015-01-01T00:00:00.000Z */
-			period =  {
-				startkey: dates[0],
-				endkey: dates[1]
-			};
-		}
-	}
+    var period = hlp_date.extractPeriod(req.params.period);
+    if (period == false) {
+        res.status(400).send('Invalid period');
+        return;
+    }
 	
 	var field = req.params.field.toLowerCase()
 	try {
 		var Model = require('../models/' + field + '.js');
-		// TODO: Tester en utilisant les models déjà définis dans les apps
+		// TODO: Utiliser des models pivots
+		// Tester en utilisant les models déjà définis dans les apps
 		// Nécéssite d'installer PersoCloud sur le Cozy
 		// var Model = require('../../../apps/kyou/server/' + field + '.js');		
 	}
@@ -37,17 +28,25 @@ function analyze(req, res, next) {
 		return;
 	}	
     Model.request('byDate', period, function(err, cozyData) {
+		// Conversion au modèle pivots // TODO function externe avec callback
+		// TODO Tester si cozyData est bien un tableau
+		cozyData.forEach(function(element) {
+			if(element.amount != undefined) {
+				element.value = element.amount;
+			}
+		});
+		
         if(err) {
             next(err);
         } else {
 			// Récupération des données du moteur
 			var clientMoteur = requestJson.createClient("http://localhost:8081/");
-			var enginePath = "analyze/getAll?field=" + field;
+			var enginePath = "analyze/field=" + field;
 			if(period != null) {
-				enginePath += "&period=" + period.startkey + ";" + period.endkey;
+				enginePath += "&period=" + period.start + ";" + period.end;
 			}
 			clientMoteur.get(enginePath, function(engineErr, engineRes, engineData) {				
-				res.status(200).json({cozyData: cozyData, engineData: engineData});
+				res.status(200).json({cozyData: cozyData, engine : engineData});
 			})
         }
     });
