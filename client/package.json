@@ -1,0 +1,37 @@
+{
+  "name": "persocloud",
+  "version": "0.0.4",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run cozy",
+	"cozy": "ng build --base-href /apps/persocloud/ --target=development --watch true",
+	"cozy:dev": "npm run cozy",
+	"cozy:prod": "ng build --base-href /apps/persocloud/ --target=production",
+	"build": "ng build --base-href /apps/persocloud/ --target=development",
+	"build:dev": "npm run build",
+	"build:prod": "ng build --base-href /apps/persocloud/ --target=production",
+    "serve": "ng serve"  
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^2.4.0",
+    "@angular/compiler": "^2.4.0",
+    "@angular/core": "^2.4.0",
+    "@angular/forms": "^2.4.0",
+    "@angular/http": "^2.4.0",
+    "@angular/platform-browser": "^2.4.0",
+    "@angular/platform-browser-dynamic": "^2.4.0",
+    "@angular/router": "^3.4.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.7.6"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.0.0-rc.1",
+    "@angular/compiler-cli": "^2.4.0",
+    "@types/node": "~6.0.60",
+	"tslint": "^4.0.0",
+    "ts-node": "~2.0.0",
+    "typescript": "~2.0.0"
+  }
+}

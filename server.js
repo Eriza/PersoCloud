@@ -12,13 +12,13 @@ var morgan = require('morgan');  // Module permettant d'afficher les logs de con
 var cozydb = require('cozydb');
 
 // Configuration
-app.use(express.static(__dirname + '/client')); // set the static files location /client/img will be /img for users
+app.use(express.static(__dirname + '/client/dist')); // set the static files location
+
 app.use(morgan('dev')) // Remplacer dev par common pour afficher des logs comme pour Apache
 app.use(bodyParser.urlencoded({'extended':'true'})); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride());
-
 
 // Lancement du serveur
 var routes = require('./server/routes'); // Chargement des routes de l'API
