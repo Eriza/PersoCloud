@@ -25,15 +25,15 @@ router.post('/options/setAuthorizationToSend', function(req, res) {
 
 // Analyse
 router.get('/analyze/field=:field&period=:period', function(req, res, next) {
-	ctrl_analyze.analyze(req, res, next)	  
+	ctrl_analyze.analyze(req, res, next);	
 })
 
 router.get('/analyze/field=:field', function(req, res, next) {
-	ctrl_analyze.analyze(req, res, next)	 
+	ctrl_analyze.analyze(req, res, next);	 
 })
 
 router.get('/analyze/field=', function(req, res) {
-	res.status(400).send('No field specified')  
+	res.status(400).send('No field specified');  
 })
 
 module.exports = router

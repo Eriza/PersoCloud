@@ -1,15 +1,17 @@
 {
   "name": "persocloud",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "scripts": {
     "start": "npm run cozy",
-	"cozy": "ng build --base-href /apps/persocloud/ --target=development --watch true",
+	"cozy": "ng build --base-href /apps/persocloud/ --target=development --watch true --environment=dev",
 	"cozy:dev": "npm run cozy",
-	"cozy:prod": "ng build --base-href /apps/persocloud/ --target=production",
-	"build": "ng build --base-href /apps/persocloud/ --target=development",
+	"cozy:dev_api": "ng build --base-href /apps/persocloud/ --target=development --watch true --environment=dev_api",
+	"cozy:prod": "ng build --base-href /apps/persocloud/ --target=production --watch true --environment=prod",
+	"build": "ng build --base-href /apps/persocloud/ --target=development --environment=dev",
 	"build:dev": "npm run build",
-	"build:prod": "ng build --base-href /apps/persocloud/ --target=production",
+	"build:dev_api": "ng build --base-href /apps/persocloud/ --target=development --environment=dev_api",
+	"build:prod": "ng build --base-href /apps/persocloud/ --target=production --environment=prod",
     "serve": "ng serve"  
   },
   "private": true,

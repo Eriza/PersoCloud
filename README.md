@@ -1,3 +1,20 @@
+# Utilisation
+#### Informations
+* Les sources de la partie cliente sont dans {+ client/src/ +}. Les fichiers compilés sont lus par Cozy et sont dans le répertoire {+client/dist/ +}.
+* La partie cliente peut être compilée de deux façons : en mode développement ou production. Dans le second cas, les fichiers générés sont plus légers.
+
+## Commandes
+#### Utilisation basique
+* `npm install` : Installe l'API serveur et la partie cliente.
+* `npm start` : Démarre l'API serveur et compile la partie cliente en mode développement avec le dummy service. Chaque modification apportée à la partie cliente dans {+ client/src/ +} relance automatiquement la compilation. 
+
+#### Utilisation avancée
+* `npm run start:only` : Démarre uniquement l'API serveur. Si besoin, la partie cliente est a compilée dans un autre terminal dans {+ client/+} :
+  * `npm start` / `npm run cozy:dev` : Compile en mode développement avec le dummy service et recompile automatiquement en cas de modification dans {+ client/src/ +}.
+  * `npm run cozy:dev_api` : Compile en mode développement avec le http service et recompile automatiquement en cas de modification dans {+ client/src/ +}.
+  * `npm run cozy:prod` : Compile en mode production avec le http service et recompile automatiquement en cas de modification dans {+client/src/ +}.
+  * `npm run build:dev` / `npm run build:dev_api` / `npm run build:prod` : Idem que précédemment mais sans la recompilation automatique.
+
 # API serveur
 L'API est appelée à partir de http://localhost:9104/apps/persocloud/api/. Chaque méthode renvoie du JSON.
 

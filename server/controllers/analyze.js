@@ -46,7 +46,7 @@ function analyze(req, res, next) {
 				enginePath += "&period=" + period.start + ";" + period.end;
 			}
 			clientMoteur.get(enginePath, function(engineErr, engineRes, engineData) {				
-				res.status(200).json({cozyData: cozyData, engine : engineData});
+				res.status(200).json({cozy: cozyData, engine : engineData});
 			})
         }
     });

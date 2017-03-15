@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 
+import { environment } from '../environments/environment';
+
 @Component({
-  selector: 'app-root',
+  selector: 'app-perocloud',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Bienvenue sur PersoCloud !';
+  name = 'PersoCloud';
+  envAnalyzeService = environment.analyze_service;
 }

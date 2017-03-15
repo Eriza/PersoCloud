@@ -1,0 +1,8 @@
+<h2>Les donnees brutes</h2>
+<ul *ngIf="donnees">
+	<li *ngFor="let donnee of donnees.engine.data">
+		Time :{{donnee.time}}<br/>Type:{{donnee.type}} 
+			<br/> Value:{{donnee.value}} 
+			<br/> Vendeur: {{donnee.vendor}}
+	</li>
+</ul>
