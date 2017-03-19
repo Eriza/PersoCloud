@@ -1,8 +1,23 @@
-<h2>Les donnees brutes</h2>
-<ul *ngIf="donnees">
+<button (click)=getAnalyze()>Récupérer l'analyse</button>
+
+<h2>Données cozy</h2>
+<pre *ngIf="donnees">{{ donnees.cozy | json }}</pre>
+
+<h2>Données moteur</h2>
+<h3>Metadonnées</h3>
+<pre *ngIf="donnees">{{ donnees.engine.meta | json }}</pre>
+
+<h3>Données</h3>
+<pre *ngIf="donnees">{{ donnees.engine.data | json }}</pre>
+
+<!--
+<h3>Données</h3>
+<pre *ngIf="donnees">{{ donnees.engine.data | json }}</pre>
+<ul *ngIf="donnees">	
 	<li *ngFor="let donnee of donnees.engine.data">
-		Time :{{donnee.time}}<br/>Type:{{donnee.type}} 
-			<br/> Value:{{donnee.value}} 
-			<br/> Vendeur: {{donnee.vendor}}
-	</li>
-</ul>
+		Date : {{donnee.time}}
+		<br/>Type : {{donnee.type}} 
+		<br/>Value : {{donnee.value}} 
+		<br/>Vendeur : {{donnee.vendor}}
+	</li>	
+</ul> -->

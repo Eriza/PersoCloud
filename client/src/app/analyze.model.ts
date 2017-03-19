@@ -1,5 +1,5 @@
 export class AnalyzeModel {
-	cozy: Object[],
+	cozy: Object[];
 	engine: {
 		data: Object[],
 		meta: {

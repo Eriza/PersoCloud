@@ -6,15 +6,20 @@ var requestJson = require('request-json');
 
 var hlp_date = require('../helpers/date');
 
-function analyze(req, res, next) {
+function analyze(req, res, next) {	
+	if(req.query.field == undefined) {
+		res.status(400).send('No field specified');
+        return;
+	}
+	
 	// Extraction de la période
-    var period = hlp_date.extractPeriod(req.params.period);
+    var period = hlp_date.extractPeriod(req.query.period);
     if (period == false) {
         res.status(400).send('Invalid period');
         return;
     }
-	
-	var field = req.params.field.toLowerCase()
+
+	var field = req.query.field.toLowerCase()
 	try {
 		var Model = require('../models/' + field + '.js');
 		// TODO: Utiliser des models pivots
@@ -41,8 +46,8 @@ function analyze(req, res, next) {
         } else {
 			// Récupération des données du moteur
 			var clientMoteur = requestJson.createClient("http://localhost:8081/");
-			var enginePath = "analyze/field=" + field;
-			if(period != null) {
+			var enginePath = "analyze/field=" + field; // Sera corrigé dans la prochaine version du moteur (/analyze?field=...&period=...)
+			if(period != undefined) {
 				enginePath += "&period=" + period.start + ";" + period.end;
 			}
 			clientMoteur.get(enginePath, function(engineErr, engineRes, engineData) {				

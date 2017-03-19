@@ -5,13 +5,12 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { DonneesComponent }	from './donnees.component';
-import { AnalyzeServiceHttp } from './analyze.service.http';
-import { AnalyzeServiceDummy } from './analyze.service.dummy';
+import { AnalyzeService } from './analyze.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-	DonneesComponent
+	  DonneesComponent
   ],
   imports: [
     BrowserModule,
@@ -19,8 +18,7 @@ import { AnalyzeServiceDummy } from './analyze.service.dummy';
     HttpModule
   ],
   providers: [
-	AnalyzeServiceHttp,
-	AnalyzeServiceDummy
+    AnalyzeService
   ],
   bootstrap: [AppComponent]
 })
