@@ -8,7 +8,7 @@ exports.extractPeriod = function(periodString) {
     if(periodString != undefined && periodString != "") {
         var dates = periodString.split(";");
         if(dates != undefined && dates.length == 2) {
-            /* TODO: Tester si dates valides (dates[0] <= dates[1] et format 2015-01-01T00:00:00.000Z */
+            /* TODO: Tester si dates valides (dates[0] <= dates[1] et format 2015-01-01T00:00:00.000Z ou 2015-01-01*/
             period = {
                 start: dates[0],
                 end: dates[1]
