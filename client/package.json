@@ -12,7 +12,8 @@
 	"build:dev": "npm run build",
 	"build:dev_api": "ng build --base-href /apps/persocloud/ --target=development --environment=dev_api",
 	"build:prod": "ng build --base-href /apps/persocloud/ --target=production --environment=prod",
-    "serve": "ng serve"  
+    "serve": "ng serve",
+	"link": "mklink /j dist\\node_modules\\ node_modules"	
   },
   "private": true,
   "dependencies": {
