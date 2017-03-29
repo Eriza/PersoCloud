@@ -19,7 +19,7 @@ function analyze(req, res, next) {
 	// Groupby
 	var group = req.query.group;	
 			
-	fs.readFile('server/cozyid.pc', 'utf8', function (err, CozyID) {
+	fs.readFile('cozyid.pc', 'utf8', function (err, CozyID) {
 		if (err) {
 			console.error("Erreur cozyid.pc : " + err);
 			res.status(500).send();			

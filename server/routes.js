@@ -6,9 +6,18 @@
 
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 
 var ctrl_analyze = require("./controllers/analyze");
 var ctrl_options = require("./controllers/options");
+
+// Récupérer le CozyId
+router.get('/cozyid', function (req, res) {
+    fs.readFile("cozyid.pc", 'utf8', function (err, data) {
+        res.send(data);
+    });
+});
+
 
 // Options de l'utilisateur
 router.get('/options', function(req, res, next) {

@@ -4,8 +4,9 @@ import { AnalyzeModel } from './analyze.model';
  * Génération aléatoire des données retournées par l'API serveur
  */
 export const DONNEES = function() : AnalyzeModel {   
-    var max, min, sum = null;
-    var values = [];
+    var engine_max, engine_min, engine_sum, cozy_max, cozy_min, cozy_sum = null;
+    var engine_values = [];
+    var cozy_values = [];
     var cozyData = [];
     var engineData = [];
 
@@ -16,37 +17,61 @@ export const DONNEES = function() : AnalyzeModel {
         engineData.push(data);        
 
         // Pré-calculs des métadonnées
-        values.push(data.value);
-        if(data.value > max) {
-            max = data.value;
+        engine_values.push(data.value);
+        if(data.value > engine_max) {
+            engine_max = data.value;
         }
-        if(data.value < min) {
-            min = data.value;
+        if(data.value < engine_min) {
+            engine_min = data.value;
         }
-        sum += data.value;
+        engine_sum += data.value;
     }
 
     // Génération des données cozy
     var i_max = getRandomInt(1, 15);
     for (var _i = 0; _i < i_max; _i++) {
-        cozyData.push(generateData());        
+        var data = generateData();
+        cozyData.push(data);        
+
+        // Pré-calculs des métadonnées
+        cozy_values.push(data.value);
+        if(data.value > cozy_max) {
+            cozy_max = data.value;
+        }
+        if(data.value < cozy_min) {
+            cozy_min = data.value;
+        }
+        cozy_sum += data.value;       
     }
 
     // Formatage des données
     let model = new AnalyzeModel();
-    model.cozy = cozyData;
+    model.cozy = {
+        data: cozyData, 
+        meta: {
+            count: cozyData.length,
+            first: cozyData[0].value,
+			last: cozyData[cozyData.length-1].value,
+			max: cozy_max,
+			mean: cozy_sum / cozyData.length,
+			median: median(cozy_values),
+			min: cozy_min,
+			stddev: standardDeviation(cozy_values),
+			sum: cozy_sum
+        }
+    };
     model.engine = {
         data: engineData, 
         meta: {
             count: engineData.length,
             first: engineData[0].value,
 			last: engineData[engineData.length-1].value,
-			max: max,
-			mean: sum / engineData.length,
-			median: median(values),
-			min: min,
-			stddev: standardDeviation(values),
-			sum: sum
+			max: engine_max,
+			mean: engine_sum / engineData.length,
+			median: median(engine_values),
+			min: engine_min,
+			stddev: standardDeviation(engine_values),
+			sum: engine_sum
         }
     };
     return model;

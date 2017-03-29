@@ -13,9 +13,14 @@ export class AnalyzeService {
 		// Si l'application a été compilé pour utilisé l'API moteur (http service)
 		if(environment.analyze_service == "http") {
     		return this.http.get("/apps/persocloud/api/analyze?field=Bill")
+					.toPromise()
+					.then(response => response.json() as AnalyzeModel)
+					.catch(this.handleError);
+				//})
+				/*  /*this.http.get("/apps/persocloud/api/cozyid")
 				.toPromise()
-				.then(response => response.json() as AnalyzeModel)
-				.catch(this.handleError);
+				.then(function(response) {*/
+					 
 		}
 		// Si l'application a éré compilé pour utilisé le dummy service
 		else {
