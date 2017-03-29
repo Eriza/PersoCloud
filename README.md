@@ -14,6 +14,7 @@
   * `npm run cozy:dev_api` : Compile en mode développement avec le http service et recompile automatiquement en cas de modification dans {+ client/src/ +}.
   * `npm run cozy:prod` : Compile en mode production avec le http service et recompile automatiquement en cas de modification dans {+client/src/ +}.
   * `npm run build:dev` / `npm run build:dev_api` / `npm run build:prod` : Idem que précédemment mais sans la recompilation automatique.
+  * `npm run link` : Créer un lien symbolique de client/node_modules dans client/dist/node_modules (Windows uniquement). Utile si la partie cliente a besoin d'accéder à des modules particuliers.
 
 # API serveur
 L'API est appelée à partir de http://localhost:9104/apps/persocloud/api/. Chaque méthode renvoie du JSON.

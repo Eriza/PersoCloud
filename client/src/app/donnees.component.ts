@@ -15,5 +15,9 @@ export class DonneesComponent {
   
   getAnalyze(): void {
 	  this.AnalyzeService.getResults().then(results => this.donnees = results);
-  }  
+  } 
+  
+  ngOnInit(): void {
+	  this.getAnalyze();
+  }
 }

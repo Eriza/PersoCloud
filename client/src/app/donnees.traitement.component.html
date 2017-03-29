@@ -1,0 +1,9 @@
+<!--<script>
+	var param = "vendor";
+</script>-->
+
+<!--<button *ngIf="donnees" (click)=traiterWithFilter(param)>Récupérer le traitement</button>-->
+<button *ngIf="donnees" (click)=traiter()>Récupérer le traitement</button>
+<doughnut-chart-demo *ngIf="valuesForChart" [doughnutChartLabels]="label" [doughnutChartData]="valuesForChart"></doughnut-chart-demo>
+<pie-chart-demo *ngIf="valuesForChart" [label]="label" [valuesForChart]="valuesForChart"></pie-chart-demo>
+<polar-area-chart-demo *ngIf="valuesForChart" [label]="label" [valuesForChart]="valuesForChart"></polar-area-chart-demo>

@@ -1,4 +1,5 @@
-<button (click)=getAnalyze()>Récupérer l'analyse</button>
+<button (click)=getAnalyze()>Randomize (Si dummy)</button>
+<donnees-traitement *ngIf="donnees" [donnees]="donnees"></donnees-traitement>
 
 <h2>Données cozy</h2>
 <pre *ngIf="donnees">{{ donnees.cozy | json }}</pre>
