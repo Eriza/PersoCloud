@@ -1,7 +1,7 @@
-var http = require('http')
-var express = require('express')
-var app = express()
-var cozydb = require('cozydb')
+var http = require('http');
+var express = require('express');
+var app = express();
+var cozydb = require('cozydb');
 var requestJson = require('request-json');
 
 var hlp_date = require('../helpers/date');
@@ -12,8 +12,36 @@ var Model = require('../models/pc_options.js');
  * Ne prend en compte que les requêtes "application/x-www-form-urlencoded"
  * Exemple : birthdate=2017-01-02&city=Rennes&country=France
  * 
- * TODO: Permettre la mise à jour des options,au lieu de leur suppression puis création
+ * TODO: Permettre la mise à jour des options,au lieu de leur suppression puis re-création
  */
+exports.get = function get(req, res, next) {	
+    getOptions(function(option) { // On récupère les options
+        if(option == undefined) {
+            res.status(404).send();
+        } else {			
+			res.status(200).json(option);
+        }
+    });
+};
+
+exports.set = function set(req, res, next) {	
+    console.log(req.body);
+    getOptions(function(option) {  // On regarde si des valeurs d'option existe déjà      
+        if(option == undefined) { // Si il n'en existe pas
+            setOption(req.body, res); // On sauvegarde les options
+        }
+        else { 
+            Model.destroy(option.id, function(err) { // Sinon on détruit les options déjà enregistrées
+                if(err) {
+                    console.error(err);
+                    res.status(500).send();
+                } else {
+                    setOptions(req.body, res); // Et au sauvegarde les nouvelles options
+                }
+            });           
+        }
+    });
+};
 
 /**
  * Récupèrer les valeurs des options
@@ -30,7 +58,7 @@ function getOptions(cb) {
             cb(results[0]);
         }
     });
-}
+};
 
 /**
  * Enregistre les valeurs des options
@@ -44,34 +72,6 @@ function setOptions(option, res) {
             res.status(500).send();
         } else {		
             res.status(200).send();
-        }
-    });
-}
-
-exports.get = function get(req, res, next) {	
-    getOptions(function(option) { // On récupère les options
-        if(option == undefined) {
-            res.status(404).send();
-        } else {			
-			res.status(200).json(option);
-        }
-    });
-};
-
-exports.set = function set(req, res, next) {	
-    getOptions(function(option) {  // On regarde si des valeurs d'option existe déjà      
-        if(option == undefined) { // Si il n'en existe pas
-            setOption(req.body, res); // On sauvegarde les options
-        }
-        else { 
-            Model.destroy(option.id, function(err) { // Sinon on détruit les options déjà enregistrées
-                if(err) {
-                    console.error(err);
-                    res.status(500).send();
-                } else {
-                    setOptions(req.body, res); // Et au sauvegarde les nouvelles options
-                }
-            });           
         }
     });
 };

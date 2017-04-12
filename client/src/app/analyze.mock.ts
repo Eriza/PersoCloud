@@ -17,14 +17,14 @@ export const DONNEES = function() : AnalyzeModel {
         engineData.push(data);        
 
         // Pré-calculs des métadonnées
-        engine_values.push(data.value);
-        if(data.value > engine_max) {
-            engine_max = data.value;
+        engine_values.push(data.amount);
+        if(data.amount > engine_max) {
+            engine_max = data.amount;
         }
-        if(data.value < engine_min) {
-            engine_min = data.value;
+        if(data.amount < engine_min) {
+            engine_min = data.amount;
         }
-        engine_sum += data.value;
+        engine_sum += data.amount;
     }
 
     // Génération des données cozy
@@ -34,14 +34,14 @@ export const DONNEES = function() : AnalyzeModel {
         cozyData.push(data);        
 
         // Pré-calculs des métadonnées
-        cozy_values.push(data.value);
-        if(data.value > cozy_max) {
-            cozy_max = data.value;
+        cozy_values.push(data.amount);
+        if(data.amount > cozy_max) {
+            cozy_max = data.amount;
         }
-        if(data.value < cozy_min) {
-            cozy_min = data.value;
+        if(data.amount < cozy_min) {
+            cozy_min = data.amount;
         }
-        cozy_sum += data.value;       
+        cozy_sum += data.amount;       
     }
 
     // Formatage des données
@@ -50,8 +50,8 @@ export const DONNEES = function() : AnalyzeModel {
         data: cozyData, 
         meta: {
             count: cozyData.length,
-            first: cozyData[0].value,
-			last: cozyData[cozyData.length-1].value,
+            first: cozyData[0].amount,
+			last: cozyData[cozyData.length-1].amount,
 			max: cozy_max,
 			mean: cozy_sum / cozyData.length,
 			median: median(cozy_values),
@@ -64,8 +64,8 @@ export const DONNEES = function() : AnalyzeModel {
         data: engineData, 
         meta: {
             count: engineData.length,
-            first: engineData[0].value,
-			last: engineData[engineData.length-1].value,
+            first: engineData[0].amount,
+			last: engineData[engineData.length-1].amount,
 			max: engine_max,
 			mean: engine_sum / engineData.length,
 			median: median(engine_values),
@@ -81,11 +81,11 @@ export const DONNEES = function() : AnalyzeModel {
 function generateData() {
     var types = { "Orange" : "phone", "Materiel.net" : "NA", "EDF": "Electricity" };
     var vendor = randomVendor();
-    var value = getRandomInt(1, 130);
+    var amount = randomFloat(1, 201, 2);
     var data = {
         time: timestampToDate(getRandomInt(1477954800, 1489935748)),
         type: types[vendor],
-        value: value,
+        amount: amount,
         vendor: vendor
     }
     return data;
@@ -137,6 +137,10 @@ function randomVendor() {
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function randomFloat(low, high, nbDecimal) {
+    return Number((Math.random() * (high - low) + low).toFixed(nbDecimal));
+};
 
 function timestampToDate(timestamp) {
   var date = new Date(timestamp*1000);

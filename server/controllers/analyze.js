@@ -1,13 +1,17 @@
+var config = require('../../config');
 var requestJson = require('request-json');
-var fs = require('fs');
 var hlp_date = require('../helpers/date');
 
-function analyze(req, res, next) {	
+exports.analyze = function (req, res, next) {	
 	if(req.query.field == undefined) {
 		res.status(400).send('No field specified');
         return;
 	}
-	var field = req.query.field.toLowerCase()
+	var field = req.query.field.toLowerCase();
+	var metakey = undefined;
+    if (req.query.metakey != undefined) {
+        metakey = req.query.metakey.toLowerCase();
+    }
 	
 	// Création d'un objet représentant la période
     var period = hlp_date.extractPeriod(req.query.period);
@@ -17,37 +21,31 @@ function analyze(req, res, next) {
     }	
 
 	// Groupby
-	var group = req.query.group;	
-			
-	fs.readFile('cozyid.pc', 'utf8', function (err, CozyID) {
-		if (err) {
-			console.error("Erreur cozyid.pc : " + err);
-			res.status(500).send();			
-		}
-		else if(CozyID == "InsererLeCozyID") {
-			console.error("Erreur : Insérer un CozyId, de préférence présent dans le moteur, dans le fichier cozyid.pc");
-			res.status(401).send("Erreur : Insérer un CozyId, de préférence présent dans le moteur, dans le fichier cozyid.pc");			
+	var group = req.query.group;
+						
+	// Connexion au moteur
+	var clientMoteur;
+	/*if(config.engine.https) {
+		clientMoteur = // TODO HTTPS
+	} else {*/
+		clientMoteur = requestJson.createClient("http://" + config.engine.url + ":" + config.engine.port);
+	//}
+	var enginePath = "analyze?cozyid=" + config.cozyid + "&field=" + field;
+	if(metakey != undefined) {
+		enginePath += "&metakey=" + metakey;
+	}
+	if(period != undefined) {
+		enginePath += "&period=" + period.start + ";" + period.end;
+	}
+	if(group != undefined) {
+		enginePath += "&group=" + group;
+	}
+	clientMoteur.get(enginePath, function(engineErr, engineRes, engineData) {				
+		if(engineRes == undefined) {
+			res.status(503).send("Service unavailable");
 		}
 		else {
-			// Connexion au moteur
-			var clientMoteur = requestJson.createClient("http://localhost:8081/");
-			var enginePath = "analyze?cozyid=" + CozyID + "&field=" + field;
-			if(period != undefined) {
-				enginePath += "&period=" + period.start + ";" + period.end;
-			}
-			if(group != undefined) {
-				enginePath += "&group=" + group;
-			}
-			clientMoteur.get(enginePath, function(engineErr, engineRes, engineData) {				
-				if(engineRes == undefined) {
-					res.status(503).send(); // Service Unavailable
-				}
-				else {
-					res.status(engineRes.statusCode).json(engineData);
-				}
-			});
+			res.status(engineRes.statusCode).json(engineData);
 		}
 	});
-}
-
-exports.analyze = analyze;
+};

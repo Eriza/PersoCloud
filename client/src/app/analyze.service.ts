@@ -12,7 +12,7 @@ export class AnalyzeService {
   	getResults(): Promise<AnalyzeModel> {
 		// Si l'application a été compilé pour utilisé l'API moteur (http service)
 		if(environment.analyze_service == "http") {	
-    		return this.http.get("/apps/persocloud/api/analyze?field=Bill")
+    		return this.http.get("/apps/persocloud/api/analyze?field=Bill&metakey=amount")
 				.toPromise()
 				.then(response => response.json() as AnalyzeModel)
 				.catch(this.handleError);					 

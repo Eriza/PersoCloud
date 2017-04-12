@@ -33,17 +33,17 @@ export class DonneesTraitementComponent{
 	  for(i=0; i<this.donnees.cozy.meta.count;i++){
 			vendor = this.donnees.cozy.data[i]["vendor"];
 			if(vendor in data){
-				data[vendor] += this.donnees.cozy.data[i]["value"];
+				data[vendor] += this.donnees.cozy.data[i]["amount"];
 			}else{
-				data[vendor] = this.donnees.cozy.data[i]["value"];
+				data[vendor] = this.donnees.cozy.data[i]["amount"];
 			}
 	  }
 	  for(i=0; i<this.donnees.engine.meta.count; i++){
 			vendor = this.donnees.engine.data[i]["vendor"];
 			if(vendor in data){
-				data[vendor] += this.donnees.engine.data[i]["value"];
+				data[vendor] += this.donnees.engine.data[i]["amount"];
 			}else{
-				data[vendor] = this.donnees.engine.data[i]["value"];
+				data[vendor] = this.donnees.engine.data[i]["amount"];
 			}
 	  }
 	  for(vendor in data){
@@ -71,17 +71,17 @@ export class DonneesTraitementComponent{
 	  for(i=0; i<this.donnees.cozy.meta.count;i++){
 			oneFilterMember = this.donnees.cozy.data[i][filterName];
 			if(oneFilterMember in data){
-				data[oneFilterMember] += this.donnees.cozy.data[i]["value"];
+				data[oneFilterMember] += this.donnees.cozy.data[i]["amount"];
 			}else{
-				data[oneFilterMember] = this.donnees.cozy.data[i]["value"];
+				data[oneFilterMember] = this.donnees.cozy.data[i]["amount"];
 			}
 	  }
 	  for(i=0; i<this.donnees.engine.meta.count; i++){
 			oneFilterMember = this.donnees.engine.data[i][filterName];
 			if(oneFilterMember in data){
-				data[oneFilterMember] += this.donnees.engine.data[i]["value"];
+				data[oneFilterMember] += this.donnees.engine.data[i]["amount"];
 			}else{
-				data[oneFilterMember] = this.donnees.engine.data[i]["value"];
+				data[oneFilterMember] = this.donnees.engine.data[i]["amount"];
 			}
 	  }
 	  for(oneFilterMember in data){
